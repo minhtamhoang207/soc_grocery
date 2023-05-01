@@ -1,12 +1,13 @@
+import 'dart:async';
 import 'dart:developer';
-
+import 'dart:math' as math;
 import 'package:bot_toast/bot_toast.dart';
-import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:soc_grocery/app/core/exceptions/exceptions.dart';
 import 'package:soc_grocery/domain/usecases/register_use_case.dart';
 
-class LoginController extends GetxController {
+class LoginController extends GetxController with GetSingleTickerProviderStateMixin {
 
   final RegisterUseCase _registerUseCase;
 

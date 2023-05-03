@@ -1,11 +1,15 @@
 import 'package:get/get.dart';
+import 'package:soc_grocery/app/services/local_storage.dart';
+import 'package:soc_grocery/data/models/response/user_response.dart';
 
 class AccountController extends GetxController {
-  //TODO: Implement AccountController
 
-  final count = 0.obs;
+  LocalStorageService localStorageService = Get.find();
+  Rx<UserResponse?> user = Rx(const UserResponse());
+
   @override
-  void onInit() {
+  void onInit() async {
+    user.value = await localStorageService.getUser();
     super.onInit();
   }
 
@@ -18,6 +22,4 @@ class AccountController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
-  void increment() => count.value++;
 }

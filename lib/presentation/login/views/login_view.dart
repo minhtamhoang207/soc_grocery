@@ -1,3 +1,5 @@
+import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,10 +12,22 @@ import 'package:gap/gap.dart';
 import 'package:soc_grocery/app/routes/app_pages.dart';
 import '../controllers/login_controller.dart';
 
-class LoginView extends GetView<LoginController> {
+class LoginView extends GetView<LoginController>{
   const LoginView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    ever(controller.status, (callback){
+      if (callback.isLoading) {
+        BotToast.showLoading();
+      } else if (callback.isSuccess) {
+        BotToast.closeAllLoading();
+        Get.toNamed(Routes.DASHBOARD);
+      } else if (callback.isError) {
+        BotToast.showText(text: controller.status.value.errorMessage ?? '');
+        BotToast.closeAllLoading();
+      }
+    });
     return Scaffold(
         body: ListView(
       padding: const EdgeInsets.only(left: 25, right: 25, top: 50),
@@ -43,6 +57,7 @@ class LoginView extends GetView<LoginController> {
               color: AppColors.textGray),
         ),
         TextField(
+          controller: controller.username,
           decoration: InputDecoration(
               focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: AppColors.primary, width: 2))),
@@ -55,17 +70,26 @@ class LoginView extends GetView<LoginController> {
               fonWeight: FontWeight.w600,
               color: AppColors.textGray),
         ),
-        TextField(
-          obscureText: true,
-          decoration: InputDecoration(
-              suffixIcon: IconButton(
-                icon: Icon(Icons.remove_red_eye_outlined,
-                    color: AppColors.primary),
-                onPressed: () {},
-              ),
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: AppColors.primary, width: 2))),
-        ),
+        Obx(() {
+          return TextField(
+            controller: controller.password,
+            obscureText: !controller.showPassword.value,
+            decoration: InputDecoration(
+                suffixIcon: IconButton(
+                  icon: Icon(
+                      controller.showPassword.value
+                          ? CupertinoIcons.eye_slash
+                          : Icons.remove_red_eye_outlined,
+                      color: AppColors.primary),
+                  onPressed: () {
+                    controller.showPassword.toggle();
+                  },
+                ),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.primary, width: 2))),
+          );
+        }),
         const Gap(30),
         Align(
           alignment: Alignment.centerRight,
@@ -80,7 +104,7 @@ class LoginView extends GetView<LoginController> {
         const Gap(15),
         InkWell(
           onTap: () {
-            Get.toNamed(Routes.DASHBOARD);
+            controller.login();
           },
           child: Container(
             decoration: BoxDecoration(
@@ -104,7 +128,9 @@ class LoginView extends GetView<LoginController> {
             padding: const EdgeInsets.symmetric(vertical: 10),
             elevation: 3,
             clipBehavior: Clip.hardEdge,
-            onPressed: () {}),
+            onPressed: () {
+              controller.loginWithGoogle();
+            }),
         const Gap(50),
         RichText(
           textAlign: TextAlign.center,

@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:get/get_state_manager/src/rx_flutter/rx_disposable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:soc_grocery/data/models/response/user_response.dart';
 
 enum _Key {
   user,
@@ -19,7 +22,26 @@ class LocalStorageService extends GetxService {
   }
 
   Future<String?> getToken() async {
-    return _sharedPreferences?.getString(_Key.bearToken.name);
+    String? jsonString = _sharedPreferences?.getString(_Key.user.name);
+    if (jsonString != null) {
+      return UserResponse.fromJson(jsonDecode(jsonString)).accessToken;
+    } else {
+      return null;
+    }
+  }
+
+  Future<void> saveUser({required UserResponse userResponse}) async {
+    final jsonString = json.encode(userResponse);
+    await _sharedPreferences?.setString(_Key.user.name, jsonString);
+  }
+
+  Future<UserResponse?> getUser() async {
+    String? jsonString = _sharedPreferences?.getString(_Key.user.name);
+    if (jsonString != null) {
+      return UserResponse.fromJson(jsonDecode(jsonString));
+    } else {
+      return null;
+    }
   }
 
   clearAll() async {

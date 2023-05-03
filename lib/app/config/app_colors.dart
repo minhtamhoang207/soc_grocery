@@ -7,4 +7,5 @@ class AppColors {
   static Color white = HexColor("FFFFFF");
   static Color lightGray = HexColor("D3D3D3");
   static Color textGray = HexColor("7C7C7C");
+  static Color category = HexColor("53B175");
 }

@@ -19,4 +19,9 @@ class Utils {
   static void unFocus() {
     FocusManager.instance.primaryFocus?.unfocus();
   }
+
+  static String formatCurrency(int value) {
+    final format = NumberFormat.currency(locale: 'vi_VN', symbol: '₫');
+    return format.format(value);
+  }
 }

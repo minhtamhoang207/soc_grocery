@@ -3,17 +3,17 @@ part of 'app_pages.dart';
 
 abstract class Routes {
   Routes._();
-  static const LOGIN = _Paths.LOGIN + _Paths.LOGIN;
-  static const SPLASH = _Paths.SPLASH + _Paths.SPLASH;
-  static const ONBOARDING = _Paths.ONBOARDING + _Paths.ONBOARDING;
-  static const SIGN_UP = _Paths.SIGN_UP + _Paths.SIGN_UP;
-  static const DASHBOARD = _Paths.DASHBOARD + _Paths.DASHBOARD;
-  static const SHOP = _Paths.SHOP + _Paths.SHOP;
-  static const EXPLORE = _Paths.EXPLORE + _Paths.EXPLORE;
-  static const CART = _Paths.CART + _Paths.CART;
-  static const ACCOUNT = _Paths.ACCOUNT + _Paths.ACCOUNT;
-  static const PRODUCT_DETAIL = _Paths.PRODUCT_DETAIL + _Paths.PRODUCT_DETAIL;
-  static const FAVOURITE = _Paths.FARVORITE + _Paths.FAVOURITE;
+  static const LOGIN = _Paths.LOGIN;
+  static const SPLASH = _Paths.SPLASH;
+  static const ONBOARDING = _Paths.ONBOARDING;
+  static const SIGN_UP = _Paths.SIGN_UP;
+  static const DASHBOARD = _Paths.DASHBOARD;
+  static const SHOP = _Paths.SHOP;
+  static const EXPLORE = _Paths.EXPLORE;
+  static const CART = _Paths.CART;
+  static const ACCOUNT = _Paths.ACCOUNT;
+  static const PRODUCT_DETAIL = _Paths.PRODUCT_DETAIL;
+  static const FAVOURITE = _Paths.FARVORITE;
 }
 
 abstract class _Paths {

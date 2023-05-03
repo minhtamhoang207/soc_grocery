@@ -1,9 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
 import 'package:soc_grocery/app/config/app_colors.dart';
 import 'package:soc_grocery/app/config/assets.gen.dart';
+import 'package:soc_grocery/presentation/account/controllers/account_controller.dart';
+import 'package:soc_grocery/presentation/cart/controllers/cart_controller.dart';
+import 'package:soc_grocery/presentation/explore/controllers/explore_controller.dart';
+import 'package:soc_grocery/presentation/favourite/controllers/favourite_controller.dart';
+import 'package:soc_grocery/presentation/shop/controllers/shop_controller.dart';
 
 import '../controllers/dashboard_controller.dart';
 
@@ -24,6 +31,26 @@ class DashboardView extends GetView<DashboardController> {
           unselectedItemColor: AppColors.black,
           unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500),
           onTap: (index) {
+            switch (index) {
+              case 0:
+                Get.put(ShopController(Get.find()));
+                break;
+              case 1:
+                Get.put(ExploreController(Get.find()));
+                break;
+              case 2:
+                Get.put(CartController());
+                break;
+              case 3:
+                Get.put(FavouriteController());
+                break;
+              case 4:
+                Get.put(AccountController());
+                break;
+              default:
+                log('index not found');
+                break;
+            }
             controller.changeTab(index: index);
           },
           currentIndex: controller.currentTab.value,

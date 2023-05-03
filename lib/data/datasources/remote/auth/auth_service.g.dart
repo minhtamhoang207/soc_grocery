@@ -12,18 +12,21 @@ class _AuthService implements AuthService {
   _AuthService(
     this._dio, {
     this.baseUrl,
-  });
+  }) {
+    baseUrl ??= 'http://35.198.235.109/api/v1';
+  }
 
   final Dio _dio;
 
   String? baseUrl;
 
   @override
-  Future<BaseResponse> register() async {
+  Future<BaseResponse> register({required registerRequest}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    final _data = <String, dynamic>{};
+    _data.addAll(registerRequest.toJson());
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
       method: 'POST',
@@ -42,11 +45,12 @@ class _AuthService implements AuthService {
   }
 
   @override
-  Future<BaseResponse> login() async {
+  Future<BaseResponse> login({required loginRequest}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    final _data = <String, dynamic>{};
+    _data.addAll(loginRequest.toJson());
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
       method: 'POST',
@@ -56,6 +60,30 @@ class _AuthService implements AuthService {
             .compose(
               _dio.options,
               '/auth/login',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseResponse> loginWithGoogle({required loginGoogleRequest}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(loginGoogleRequest.toJson());
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/auth/google/login',
               queryParameters: queryParameters,
               data: _data,
             )

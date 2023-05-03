@@ -1,11 +1,18 @@
 import 'package:get/get.dart';
+import 'package:soc_grocery/domain/usecases/category/get_category_use_case.dart';
+
+import '../../../data/models/response/category_response.dart';
 
 class ExploreController extends GetxController {
-  //TODO: Implement ExploreController
 
-  final count = 0.obs;
+  final GetCategoryUseCase _getCategoryUseCase;
+
+  ExploreController(this._getCategoryUseCase);
+  Rx<List<CategoryResponse>> listCategory = Rx([]);
+
   @override
-  void onInit() {
+  void onInit() async {
+    listCategory.value = await _getCategoryUseCase.execute();
     super.onInit();
   }
 
@@ -18,6 +25,4 @@ class ExploreController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
-  void increment() => count.value++;
 }

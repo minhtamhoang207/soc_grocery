@@ -24,6 +24,8 @@ dependencies:
   # Utils
   connectivity_plus: 3.0.3
   intl: 0.17.0
+  geolocator: 9.0.2
+  flutter_geocoder: ^0.2.2-nullsafety
 
   # Code gen
   freezed_annotation: 2.2.0
@@ -45,9 +47,11 @@ dependencies:
   flutter_svg: 2.0.4
   gap: 2.0.1
   lottie: 2.3.2
-  rive: 0.10.3
   google_fonts: 4.0.3
   sign_in_button: 3.2.0
+  carousel_slider: 4.2.1
+  cached_network_image: 3.2.3
+  flutter_rating_bar: 4.0.1
 
 dev_dependencies:
   flutter_test:

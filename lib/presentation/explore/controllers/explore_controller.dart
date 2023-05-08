@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:soc_grocery/domain/usecases/category/get_category_use_case.dart';
 
@@ -24,5 +26,19 @@ class ExploreController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  void searchCategory({required String keyword}) async {
+    if(keyword.isNotEmpty) {
+      List<CategoryResponse> listSearch = [];
+      for (CategoryResponse e in listCategory.value) {
+        if ((e.name ?? '').toLowerCase().contains(keyword.toLowerCase())) {
+          listSearch.add(e);
+        }
+      }
+      listCategory.value = listSearch;
+    } else {
+      listCategory.value = await _getCategoryUseCase.execute();
+    }
   }
 }

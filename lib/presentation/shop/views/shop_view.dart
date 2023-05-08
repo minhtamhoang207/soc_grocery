@@ -22,8 +22,9 @@ class ShopView extends GetView<ShopController> {
     return Scaffold(
         body: ListView(
       children: [
+        const Gap(20),
         SvgPicture.asset(Assets.icons.icCarrot),
-        const Gap(10),
+        const Gap(15),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25),
           child: Row(
@@ -40,6 +41,13 @@ class ShopView extends GetView<ShopController> {
           child: TextField(
             decoration: InputDecoration(
                 filled: true,
+                contentPadding: const EdgeInsets.only(top: 15),
+                suffixIcon: IconButton(
+                  onPressed: () {
+
+                  },
+                  icon: const Icon(CupertinoIcons.mic),
+                ),
                 fillColor: AppColors.lightGray.withOpacity(0.5),
                 border: InputBorder.none,
                 hintText: 'Tìm kiếm sản phẩm',
@@ -94,17 +102,19 @@ class ShopView extends GetView<ShopController> {
                 ),
               ],
             )),
-        // SizedBox(
-        //   height: 250,
-        //   child: ListView.builder(
-        //     itemCount: 6,
-        //     padding: const EdgeInsets.only(left: 25),
-        //     scrollDirection: Axis.horizontal,
-        //     itemBuilder: (context, index) {
-        //       return const ProductItem(product: ,);
-        //     },
-        //   ),
-        // ),
+        Obx(() =>
+            SizedBox(
+              height: 250,
+              child: ListView.builder(
+                itemCount: controller.listProduct.value.length,
+                padding: const EdgeInsets.only(left: 25),
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  ProductResponse product = controller.listProduct.value[index];
+                  return ProductItem(product: product);
+                },
+              ),
+            )),
       ],
     ));
   }

@@ -18,6 +18,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_cart.svg
   String get icCart => 'assets/icons/ic_cart.svg';
 
+  /// File path: assets/icons/ic_category.svg
+  String get icCategory => 'assets/icons/ic_category.svg';
+
   /// File path: assets/icons/ic_explore.svg
   String get icExplore => 'assets/icons/ic_explore.svg';
 
@@ -34,19 +37,27 @@ class $AssetsIconsGen {
   String get icShop => 'assets/icons/ic_shop.svg';
 
   /// List of all assets
-  List<String> get values =>
-      [icCarrot, icCart, icExplore, icHeart, icLocation, icPerson, icShop];
+  List<String> get values => [
+        icCarrot,
+        icCart,
+        icCategory,
+        icExplore,
+        icHeart,
+        icLocation,
+        icPerson,
+        icShop
+      ];
 }
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/ic_manage_clan.png
-  AssetGenImage get icManageClan =>
-      const AssetGenImage('assets/images/ic_manage_clan.png');
+  /// File path: assets/images/img_default.png
+  AssetGenImage get imgDefault =>
+      const AssetGenImage('assets/images/img_default.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [icManageClan];
+  List<AssetGenImage> get values => [imgDefault];
 }
 
 class $AssetsLottiesGen {

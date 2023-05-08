@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'product_service.dart';
+part of 'cart_service.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'product_service.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _ProductService implements ProductService {
-  _ProductService(
+class _CartService implements CartService {
+  _CartService(
     this._dio, {
     this.baseUrl,
   }) {
@@ -21,20 +21,21 @@ class _ProductService implements ProductService {
   String? baseUrl;
 
   @override
-  Future<BaseResponse> getListProductByCategory({required category}) async {
+  Future<BaseResponse> createCart({required request}) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'category': category};
+    final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    final _data = <String, dynamic>{};
+    _data.addAll(request.toJson());
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'GET',
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/products',
+              '/cart',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -44,7 +45,7 @@ class _ProductService implements ProductService {
   }
 
   @override
-  Future<BaseResponse> getListProduct() async {
+  Future<BaseResponse> getCart() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -57,7 +58,34 @@ class _ProductService implements ProductService {
     )
             .compose(
               _dio.options,
-              '/products',
+              '/cart',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseResponse> addItemToCart({
+    required productID,
+    required itemRequest,
+  }) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(itemRequest.toJson());
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/cart/${productID}/items',
               queryParameters: queryParameters,
               data: _data,
             )

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:soc_grocery/app/routes/app_pages.dart';
 import 'package:soc_grocery/app/util/util.dart';
 import 'package:soc_grocery/data/models/response/product_response.dart';
+import 'package:soc_grocery/presentation/common_widgets/cache_network_image.dart';
 
 import '../../../../app/config/app_colors.dart';
 import '../../../../app/config/app_text_styles.dart';
@@ -15,11 +16,8 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Get.toNamed(
-          Routes.PRODUCT_DETAIL,
-          arguments: product
-        );
+      onTap: () {
+        Get.toNamed(Routes.PRODUCT_DETAIL, arguments: product);
       },
       child: Container(
         width: Get.width / 2,
@@ -41,24 +39,23 @@ class ProductItem extends StatelessWidget {
           children: [
             Expanded(
                 child: Center(
-                    child: Hero(
-                      tag: product.id!,
-                      child: Container(
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(15),
-                        topRight: Radius.circular(15)),
-                  image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                            'https://www.gardeningknowhow.com/wp-content/uploads/2021/05/whole-and-slices-watermelon.jpg'))),
+                    child: AppImage(
+                      url: product.imageUrls!.isEmpty
+                          ? ''
+                          : product.imageUrls?.first ?? '',
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          topRight: Radius.circular(15)),
+                    )
+                )
             ),
-                    ))),
             const Gap(10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               child: Text(
                 product.name ?? '',
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
                 style: AppTextStyles.montserrat(
                     fontSize: 16, fonWeight: FontWeight.bold),
               ),

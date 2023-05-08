@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:soc_grocery/presentation/account/views/account_view.dart';
+import 'package:soc_grocery/presentation/cart/controllers/cart_controller.dart';
 import 'package:soc_grocery/presentation/cart/views/cart_view.dart';
 import 'package:soc_grocery/presentation/explore/views/explore_view.dart';
 import 'package:soc_grocery/presentation/favourite/views/favourite_view.dart';

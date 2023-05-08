@@ -3,16 +3,19 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:soc_grocery/app/services/local_storage.dart';
+import 'package:soc_grocery/data/models/request/create_cart_request.dart';
 import 'package:soc_grocery/data/models/request/register_request.dart';
 import 'package:soc_grocery/domain/usecases/auth/register_use_case.dart';
+import 'package:soc_grocery/domain/usecases/cart/create_cart_usecase.dart';
 
 import '../../../app/core/exceptions/exceptions.dart';
 import '../../../data/models/response/user_response.dart';
 
 class SignUpController extends GetxController {
   final RegisterUseCase _registerUseCase;
+  final CreateCartUseCase _createCartUseCase;
 
-  SignUpController(this._registerUseCase);
+  SignUpController(this._registerUseCase, this._createCartUseCase);
 
   LocalStorageService localStorageService = Get.find();
   TextEditingController username = TextEditingController();
@@ -34,7 +37,10 @@ class SignUpController extends GetxController {
                 password: password.text,
                 email: email.text
             ));
-        // await localStorageService.saveUser(userResponse: response);
+        await localStorageService.saveUser(userResponse: response);
+        await _createCartUseCase.execute(CreateCartRequest(
+          status: 'ACTIVE'
+        ));
         signUpStatus.value = RxStatus.success();
       } else {
         signUpStatus.value = RxStatus.error('Vui lòng kiểm tra lại mật khẩu');

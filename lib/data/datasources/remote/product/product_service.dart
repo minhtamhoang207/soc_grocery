@@ -10,5 +10,10 @@ abstract class ProductService {
   factory ProductService(Dio dio, {String baseUrl}) = _ProductService;
 
   @GET('/products')
+  Future<BaseResponse> getListProductByCategory({
+    @Query('category') required String category,
+  });
+
+  @GET('/products')
   Future<BaseResponse> getListProduct();
 }

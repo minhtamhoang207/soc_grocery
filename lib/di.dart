@@ -2,8 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:soc_grocery/app/services/local_storage.dart';
 import 'package:soc_grocery/data/datasources/remote/auth/auth_service.dart';
+import 'package:soc_grocery/data/datasources/remote/cart/cart_service.dart';
 import 'package:soc_grocery/data/datasources/remote/category/category_service.dart';
 import 'package:soc_grocery/data/datasources/remote/product/product_service.dart';
+import 'package:soc_grocery/data/repositories/cart_repository_impl.dart';
 import 'package:soc_grocery/data/repositories/category_repository_impl.dart';
 import 'package:soc_grocery/data/repositories/product_repository_impl.dart';
 
@@ -23,6 +25,12 @@ class DependencyInjection {
     Get.put(ProductService(Get.find<Dio>()), permanent: true);
     Get.put(ProductRepositoryImpl(
         productService: Get.find<ProductService>()),
+        permanent: true
+    );
+
+    Get.put(CartService(Get.find<Dio>()), permanent: true);
+    Get.put(CartRepositoryImpl(
+        cartService: Get.find<CartService>()),
         permanent: true
     );
 

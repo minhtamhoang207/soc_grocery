@@ -10,6 +10,17 @@ class ProductRepositoryImpl implements ProductRepository {
   ProductService productService;
 
   @override
+  Future<BaseResponse> getListProductByCategory({required String category}) async {
+    final response = await productService.getListProductByCategory(category: category);
+
+    if (response.data != null) {
+      return response;
+    } else {
+      throw Exception();
+    }
+  }
+
+  @override
   Future<BaseResponse> getListProduct() async {
     final response = await productService.getListProduct();
 

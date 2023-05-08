@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:soc_grocery/app/config/app_colors.dart';
 import 'package:soc_grocery/app/config/app_text_styles.dart';
 import 'package:soc_grocery/app/util/util.dart';
+import 'package:soc_grocery/presentation/common_widgets/cache_network_image.dart';
 
 import '../controllers/product_detail_controller.dart';
 
@@ -21,37 +22,22 @@ class ProductDetailView extends GetView<ProductDetailController> {
       children: [
         Stack(
           children: [
-            Hero(
-              tag: controller.product.id!,
-              child: CachedNetworkImage(
-                imageUrl:
-                    "https://live-production.wcms.abc-cdn.net.au/b983edcea41673904b177071b138dadb?impolicy=wcms_crop_resize&cropH=861&cropW=1529&xPos=0&yPos=345&width=862&height=485",
-                imageBuilder: (context, imageProvider) => Container(
-                  height: Get.height * 0.4,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                        bottomRight: Radius.circular(20),
-                        bottomLeft: Radius.circular(20)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.6),
-                        spreadRadius: 3,
-                        blurRadius: 3,
-                        offset:
-                            const Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
-                    image: DecorationImage(
-                        image: imageProvider, fit: BoxFit.cover),
-                  ),
+
+            AppImage(
+              url: 'https://live-production.wcms.abc-cdn.net.au/b983edcea41673904b177071b138dadb?impolicy=wcms_crop_resize&cropH=861&cropW=1529&xPos=0&yPos=345&width=862&height=485',
+              height: Get.height * 0.4,
+              borderRadius: const BorderRadius.only(
+                  bottomRight: Radius.circular(20),
+                  bottomLeft: Radius.circular(20)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.6),
+                  spreadRadius: 3,
+                  blurRadius: 3,
+                  offset:
+                  const Offset(0, 3), // changes position of shadow
                 ),
-                placeholder: (context, url) => Center(
-                    child: CircularProgressIndicator(
-                  color: AppColors.primary,
-                )),
-                errorWidget: (context, url, error) =>
-                    const Center(child: Icon(Icons.error)),
-              ),
+              ],
             ),
             Positioned(
               top: 50,

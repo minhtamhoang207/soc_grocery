@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:soc_grocery/app/config/app_colors.dart';
 import 'package:soc_grocery/app/config/app_text_styles.dart';
 import 'package:soc_grocery/app/config/assets.gen.dart';
+import 'package:soc_grocery/app/routes/app_pages.dart';
 import 'package:soc_grocery/data/models/response/product_response.dart';
 import 'package:soc_grocery/presentation/shop/views/widgets/banner.dart';
 import 'package:soc_grocery/presentation/shop/views/widgets/product_item.dart';
@@ -65,16 +66,21 @@ class ShopView extends GetView<ShopController> {
                   style: AppTextStyles.montserrat(fontSize: 18),
                 ),
                 const Spacer(),
-                Text(
-                  'See all',
-                  style: AppTextStyles.montserrat(
-                      fontSize: 15, color: AppColors.primary),
+                InkWell(
+                  onTap: () {
+                    Get.toNamed(Routes.LIST_PRODUCT);
+                  },
+                  child: Text(
+                    'See all',
+                    style: AppTextStyles.montserrat(
+                        fontSize: 15, color: AppColors.primary),
+                  ),
                 ),
               ],
             )),
         Obx(() =>
             SizedBox(
-              height: 250,
+              height: 280,
               child: ListView.builder(
                 itemCount: controller.listProduct.value.length,
                 padding: const EdgeInsets.only(left: 25),
@@ -104,7 +110,7 @@ class ShopView extends GetView<ShopController> {
             )),
         Obx(() =>
             SizedBox(
-              height: 250,
+              height: 280,
               child: ListView.builder(
                 itemCount: controller.listProduct.value.length,
                 padding: const EdgeInsets.only(left: 25),

@@ -63,7 +63,7 @@ class ShopController extends GetxController {
 
   @override
   void onInit() async {
-    listProduct.value = await _getProductUseCase.execute();
+    listProduct.value = await _getProductUseCase.execute('');
     currentPosition.value = await _determinePosition();
     super.onInit();
   }

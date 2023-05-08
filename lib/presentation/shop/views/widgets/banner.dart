@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:soc_grocery/presentation/common_widgets/cache_network_image.dart';
 
 class ShopBanner extends StatelessWidget {
   final List<String> imgList;
@@ -18,13 +19,10 @@ class ShopBanner extends StatelessWidget {
             enlargeCenterPage: true,
           ),
           items: imgList
-              .map((item) =>
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                        fit: BoxFit.cover, image: NetworkImage(item))),
-              ))
+              .map(
+                (item) => AppImage(
+                    url: item, borderRadius: BorderRadius.circular(10)),
+              )
               .toList(),
         ));
   }

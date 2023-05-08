@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:soc_grocery/app/config/app_colors.dart';
 import 'package:soc_grocery/app/config/assets.gen.dart';
 import 'package:soc_grocery/presentation/account/controllers/account_controller.dart';
+import 'package:soc_grocery/presentation/cart/bindings/cart_binding.dart';
 import 'package:soc_grocery/presentation/cart/controllers/cart_controller.dart';
 import 'package:soc_grocery/presentation/explore/controllers/explore_controller.dart';
 import 'package:soc_grocery/presentation/favourite/controllers/favourite_controller.dart';
@@ -39,7 +40,7 @@ class DashboardView extends GetView<DashboardController> {
                 Get.put(ExploreController(Get.find()));
                 break;
               case 2:
-                Get.put(CartController());
+                CartBinding().dependencies();
                 break;
               case 3:
                 Get.put(FavouriteController());

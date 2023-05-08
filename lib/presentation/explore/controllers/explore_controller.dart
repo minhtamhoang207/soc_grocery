@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:soc_grocery/domain/usecases/category/get_category_use_case.dart';
 
@@ -11,10 +12,13 @@ class ExploreController extends GetxController {
 
   ExploreController(this._getCategoryUseCase);
   Rx<List<CategoryResponse>> listCategory = Rx([]);
+  Rx<List<CategoryResponse>> listCategoryCopy = Rx([]);
+  final searchController = TextEditingController().obs;
 
   @override
   void onInit() async {
     listCategory.value = await _getCategoryUseCase.execute();
+    listCategoryCopy.value = listCategory.value;
     super.onInit();
   }
 
@@ -38,7 +42,7 @@ class ExploreController extends GetxController {
       }
       listCategory.value = listSearch;
     } else {
-      listCategory.value = await _getCategoryUseCase.execute();
+      listCategory.value = listCategoryCopy.value;
     }
   }
 }

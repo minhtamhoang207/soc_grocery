@@ -5,13 +5,18 @@ import 'package:soc_grocery/app/routes/app_pages.dart';
 import 'package:soc_grocery/app/util/util.dart';
 import 'package:soc_grocery/data/models/response/product_response.dart';
 import 'package:soc_grocery/presentation/common_widgets/cache_network_image.dart';
+import 'package:soc_grocery/presentation/shop/controllers/shop_controller.dart';
 
 import '../../../../app/config/app_colors.dart';
 import '../../../../app/config/app_text_styles.dart';
 
 class ProductItem extends StatelessWidget {
   final ProductResponse product;
-  const ProductItem({Key? key, required this.product}) : super(key: key);
+  final ShopController shopController;
+  const ProductItem({
+    Key? key, required this.product,
+    required this.shopController
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -73,11 +78,16 @@ class ProductItem extends StatelessWidget {
                           color: AppColors.textGray),
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: AppColors.primary, shape: BoxShape.circle),
-                    padding: const EdgeInsets.all(3),
-                    child: const Icon(Icons.add, color: Colors.white),
+                  InkWell(
+                    onTap: () {
+                      shopController.addItem(productID: product.id ?? '');
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: AppColors.primary, shape: BoxShape.circle),
+                      padding: const EdgeInsets.all(3),
+                      child: const Icon(Icons.add, color: Colors.white),
+                    ),
                   )
                 ],
               ),

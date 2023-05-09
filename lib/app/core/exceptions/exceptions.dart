@@ -62,7 +62,7 @@ ErrorEntity createErrorEntity(DioError error) {
       }
 
     default:
-      return ErrorEntity(code: -1, message: error.message ?? '');
+      return ErrorEntity(code: -1, message: error.message ?? 'Unknown error');
   }
 }
 

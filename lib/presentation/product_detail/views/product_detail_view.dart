@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,12 +11,26 @@ import 'package:soc_grocery/app/config/app_text_styles.dart';
 import 'package:soc_grocery/app/util/util.dart';
 import 'package:soc_grocery/presentation/common_widgets/cache_network_image.dart';
 
+import '../../../app/routes/app_pages.dart';
 import '../controllers/product_detail_controller.dart';
 
 class ProductDetailView extends GetView<ProductDetailController> {
   const ProductDetailView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    ever(controller.status, (callback) {
+      if (callback.isLoading) {
+        BotToast.showLoading();
+      } else if (callback.isSuccess) {
+        BotToast.closeAllLoading();
+        BotToast.showText(text: 'Đã thêm sản phẩm vào giỏ hàng ^^');
+      } else if (callback.isError) {
+        BotToast.showText(text: controller.status.value.errorMessage ?? '');
+        BotToast.closeAllLoading();
+      }
+    });
+
     return Scaffold(
         body: ListView(
       padding: EdgeInsets.zero,
@@ -176,28 +191,33 @@ class ProductDetailView extends GetView<ProductDetailController> {
         ),
       ],
     ),
-      bottomNavigationBar: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-        decoration: BoxDecoration(
-          color: AppColors.primary,
-          borderRadius: BorderRadius.circular(12)
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-                'Thêm vào giỏ hàng',
-              style: AppTextStyles.montserrat(
-                color: Colors.white,
-                fonWeight: FontWeight.w600,
-                fontSize: 14
+      bottomNavigationBar: InkWell(
+        onTap: () {
+          controller.addToCart();
+        },
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+          decoration: BoxDecoration(
+            color: AppColors.primary,
+            borderRadius: BorderRadius.circular(12)
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                  'Thêm vào giỏ hàng',
+                style: AppTextStyles.montserrat(
+                  color: Colors.white,
+                  fonWeight: FontWeight.w600,
+                  fontSize: 14
+                ),
               ),
-            ),
-            const Gap(15),
-            const Icon(CupertinoIcons.cart_badge_plus, color: Colors.white)
-          ],
-        )
+              const Gap(15),
+              const Icon(CupertinoIcons.cart_badge_plus, color: Colors.white)
+            ],
+          )
+        ),
       ),
     );
   }

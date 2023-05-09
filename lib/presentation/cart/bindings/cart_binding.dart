@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:soc_grocery/domain/usecases/cart/cart_usecase.dart';
 import 'package:soc_grocery/domain/usecases/cart/get_cart_usecase.dart';
 
 import '../../../data/repositories/cart_repository_impl.dart';
@@ -9,7 +10,11 @@ class CartBinding extends Bindings {
   void dependencies() {
 
     Get.put<GetCartUseCase>(GetCartUseCase(Get.find<CartRepositoryImpl>()));
+    Get.put<CartUseCases>(CartUseCases(Get.find<CartRepositoryImpl>()));
 
-    Get.put<CartController>(CartController(Get.find()));
+    Get.put<CartController>(CartController(
+      Get.find(),
+      Get.find()
+    ));
   }
 }

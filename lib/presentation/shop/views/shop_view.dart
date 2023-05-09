@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,17 @@ class ShopView extends GetView<ShopController> {
 
   @override
   Widget build(BuildContext context) {
+    ever(controller.status, (callback) {
+      if (callback.isLoading) {
+        BotToast.showLoading();
+      } else if (callback.isSuccess) {
+        BotToast.closeAllLoading();
+      } else if (callback.isError) {
+        BotToast.showText(text: controller.status.value.errorMessage ?? '');
+        BotToast.closeAllLoading();
+      }
+    });
+
     return Scaffold(
         body: ListView(
       children: [
@@ -87,7 +99,7 @@ class ShopView extends GetView<ShopController> {
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   ProductResponse product = controller.listProduct.value[index];
-                  return ProductItem(product: product);
+                  return ProductItem(product: product, shopController: controller);
                 },
               ),
             )),
@@ -117,7 +129,7 @@ class ShopView extends GetView<ShopController> {
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   ProductResponse product = controller.listProduct.value[index];
-                  return ProductItem(product: product);
+                  return ProductItem(product: product, shopController: controller);
                 },
               ),
             )),

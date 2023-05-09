@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:soc_grocery/data/repositories/product_repository_impl.dart';
+import 'package:soc_grocery/domain/usecases/cart/cart_usecase.dart';
 import 'package:soc_grocery/domain/usecases/cart/get_cart_usecase.dart';
 import 'package:soc_grocery/domain/usecases/category/get_category_use_case.dart';
 import 'package:soc_grocery/domain/usecases/product/get_product_usecase.dart';
@@ -20,8 +21,11 @@ class DashboardBinding extends Bindings {
     Get.lazyPut<GetProductUseCase>(()
       => GetProductUseCase(Get.find<ProductRepositoryImpl>()));
 
+    Get.lazyPut<CartUseCases>(() =>
+        CartUseCases(Get.find<CartRepositoryImpl>()));
+
     Get.lazyPut<ShopController>(()
-      => ShopController(Get.find()));
+      => ShopController(Get.find(), Get.find()));
 
     Get.lazyPut<GetCategoryUseCase>(()
       => GetCategoryUseCase(Get.find<CategoryRepositoryImpl>()));

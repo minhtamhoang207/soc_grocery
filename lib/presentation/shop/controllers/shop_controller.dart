@@ -1,13 +1,20 @@
+import 'dart:developer';
+
 import 'package:flutter_geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:soc_grocery/data/models/request/add_item_request.dart';
 import 'package:soc_grocery/data/models/response/product_response.dart';
+import 'package:soc_grocery/domain/usecases/cart/cart_usecase.dart';
 import 'package:soc_grocery/domain/usecases/product/get_product_usecase.dart';
 
+import '../../../app/core/exceptions/exceptions.dart';
+
 class ShopController extends GetxController {
+  ShopController(this._getProductUseCase, this._cartUseCases);
 
   final GetProductUseCase _getProductUseCase;
-  ShopController(this._getProductUseCase);
+  final CartUseCases _cartUseCases;
 
   final List<String> imgList = [
     'https://static.vecteezy.com/system/resources/previews/001/229/304/original/box-of-groceries-on-yellow-background-free-photo.jpg',
@@ -17,6 +24,24 @@ class ShopController extends GetxController {
 
   Rx<List<ProductResponse>> listProduct = Rx([]);
   Rx<String> currentPosition = Rx('.........');
+  final status = RxStatus.empty().obs;
+
+  @override
+  void onInit() async {
+    listProduct.value = await _getProductUseCase.execute('');
+    currentPosition.value = await _determinePosition();
+    super.onInit();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+  }
 
   Future<String> _determinePosition() async {
     bool serviceEnabled;
@@ -56,25 +81,29 @@ class ShopController extends GetxController {
         desiredAccuracy: LocationAccuracy.high);
 
     final coordinates = Coordinates(position.latitude, position.longitude);
-    final addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    final addresses = await Geocoder.local.findAddressesFromCoordinates(
+        coordinates);
     final first = addresses.first;
     return "${first.addressLine}";
   }
 
-  @override
-  void onInit() async {
-    listProduct.value = await _getProductUseCase.execute('');
-    currentPosition.value = await _determinePosition();
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
+  Future<void> addItem({required String productID}) async {
+    try {
+      status.value = RxStatus.loading();
+      await _cartUseCases.addItem(
+          productID: productID,
+          addItemRequest: AddItemRequest(
+              quantity: 1,
+            productID: productID
+          )
+      );
+      status.value = RxStatus.success();
+    } on ErrorEntity catch (e) {
+      log(e.message);
+      status.value = RxStatus.error(e.message);
+    } on Exception catch (e) {
+      log(e.toString());
+      status.value = RxStatus.error('Đã xảy ra lỗi');
+    }
   }
 }

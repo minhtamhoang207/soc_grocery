@@ -34,7 +34,7 @@ class DashboardView extends GetView<DashboardController> {
           onTap: (index) {
             switch (index) {
               case 0:
-                Get.put(ShopController(Get.find()));
+                Get.put(ShopController(Get.find(), Get.find()));
                 break;
               case 1:
                 Get.put(ExploreController(Get.find()));

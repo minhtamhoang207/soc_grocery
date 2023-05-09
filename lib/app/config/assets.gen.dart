@@ -30,6 +30,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_location.svg
   String get icLocation => 'assets/icons/ic_location.svg';
 
+  /// File path: assets/icons/ic_momo.png
+  AssetGenImage get icMomo => const AssetGenImage('assets/icons/ic_momo.png');
+
   /// File path: assets/icons/ic_person.svg
   String get icPerson => 'assets/icons/ic_person.svg';
 
@@ -37,13 +40,14 @@ class $AssetsIconsGen {
   String get icShop => 'assets/icons/ic_shop.svg';
 
   /// List of all assets
-  List<String> get values => [
+  List<dynamic> get values => [
         icCarrot,
         icCart,
         icCategory,
         icExplore,
         icHeart,
         icLocation,
+        icMomo,
         icPerson,
         icShop
       ];
@@ -79,6 +83,10 @@ class Assets {
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $AssetsLottiesGen lotties = $AssetsLottiesGen();
+  static const String speechToText = 'assets/speech_to_text.json';
+
+  /// List of all assets
+  List<String> get values => [speechToText];
 }
 
 class AssetGenImage {

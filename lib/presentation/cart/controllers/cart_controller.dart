@@ -16,6 +16,7 @@ class CartController extends GetxController {
 
   Rx<List<CartResponse>> cart = Rx([]);
   final status = RxStatus.empty().obs;
+  final toastStatus = RxStatus.empty().obs;
 
   @override
   void onInit() {
@@ -32,14 +33,14 @@ class CartController extends GetxController {
     super.onClose();
   }
 
-  Future<void> getCart() async {
+  Future<void> getCart(bool rebuild) async {
     try {
-      status.value = RxStatus.loading();
+      if(rebuild) status.value = RxStatus.loading();
       cart.value = await _getCartUseCase.execute();
-      status.value = RxStatus.success();
+      if(rebuild) status.value = RxStatus.success();
     } catch (e) {
       log(e.toString());
-      status.value = RxStatus.error('Đã xảy ra lỗi');
+      if(rebuild) status.value = RxStatus.error('Đã xảy ra lỗi');
     }
   }
 
@@ -48,7 +49,7 @@ class CartController extends GetxController {
     required int quantity
   }) async {
     try {
-      status.value = RxStatus.loading();
+      toastStatus.value = RxStatus.loading();
       await _cartUseCases.updateItem(
           cartID: 'cartID',
           productID: productID,
@@ -56,14 +57,14 @@ class CartController extends GetxController {
             quantity: quantity
           )
       );
-      await getCart();
-      status.value = RxStatus.success();
+      await getCart(false);
+      toastStatus.value = RxStatus.success();
     } on ErrorEntity catch (e) {
       log(e.message);
-      status.value = RxStatus.error(e.message);
+      toastStatus.value = RxStatus.error(e.message);
     } on Exception catch (e) {
       log(e.toString());
-      status.value = RxStatus.error('Đã xảy ra lỗi');
+      toastStatus.value = RxStatus.error('Đã xảy ra lỗi');
     }
   }
 
@@ -71,19 +72,19 @@ class CartController extends GetxController {
     required String productID
   }) async {
     try {
-      status.value = RxStatus.loading();
+      toastStatus.value = RxStatus.loading();
       await _cartUseCases.deleteItem(
           cartID: 'cartID',
           productID: productID
       );
-      await getCart();
-      status.value = RxStatus.success();
+      await getCart(false);
+      toastStatus.value = RxStatus.success();
     } on ErrorEntity catch (e) {
       log(e.message);
-      status.value = RxStatus.error(e.message);
+      toastStatus.value = RxStatus.error(e.message);
     } on Exception catch (e) {
       log(e.toString());
-      status.value = RxStatus.error('Đã xảy ra lỗi');
+      toastStatus.value = RxStatus.error('Đã xảy ra lỗi');
     }
   }
 }

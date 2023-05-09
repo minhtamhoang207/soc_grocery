@@ -4,7 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:soc_grocery/app/services/local_storage.dart';
 import 'package:soc_grocery/data/models/request/create_cart_request.dart';
+import 'package:soc_grocery/data/models/request/login_request.dart';
 import 'package:soc_grocery/data/models/request/register_request.dart';
+import 'package:soc_grocery/domain/usecases/auth/login_use_case.dart';
 import 'package:soc_grocery/domain/usecases/auth/register_use_case.dart';
 import 'package:soc_grocery/domain/usecases/cart/create_cart_usecase.dart';
 
@@ -12,16 +14,23 @@ import '../../../app/core/exceptions/exceptions.dart';
 import '../../../data/models/response/user_response.dart';
 
 class SignUpController extends GetxController {
+  SignUpController(
+      this._registerUseCase,
+      this._createCartUseCase,
+      this._loginUseCase
+  );
+
   final RegisterUseCase _registerUseCase;
   final CreateCartUseCase _createCartUseCase;
+  final LoginUseCase _loginUseCase;
 
-  SignUpController(this._registerUseCase, this._createCartUseCase);
 
   LocalStorageService localStorageService = Get.find();
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
   TextEditingController email = TextEditingController();
+  final LocalStorageService _localStorageService = Get.find();
 
   final Rx<RxStatus> signUpStatus = RxStatus.empty().obs;
   final showPassword = false.obs;
@@ -31,16 +40,31 @@ class SignUpController extends GetxController {
     try {
       if(password.text == confirmPassword.text) {
         signUpStatus.value = RxStatus.loading();
-        final UserResponse response = await _registerUseCase.execute(
+        await _registerUseCase.execute(
             RegisterRequest(
                 username: username.text,
                 password: password.text,
                 email: email.text
-            ));
-        await localStorageService.saveUser(userResponse: response);
-        await _createCartUseCase.execute(CreateCartRequest(
+            )
+        );
+        final UserResponse userLogin = await _loginUseCase.execute(
+          LoginRequest(
+            username: username.text,
+            password: password.text,
+          )
+        );
+        await localStorageService.saveUser(userResponse: userLogin);
+        final createCartData = await _createCartUseCase.execute(CreateCartRequest(
           status: 'ACTIVE'
         ));
+        await _localStorageService.saveCartID(cartID: createCartData.data['_id']).then((value) async {
+          final String? cartID = await _localStorageService.getCartID();
+          print('..........................');
+          print(createCartData.data['_id']);
+          print('..........................');
+          print(cartID);
+          print('..........................');
+        });
         signUpStatus.value = RxStatus.success();
       } else {
         signUpStatus.value = RxStatus.error('Vui lòng kiểm tra lại mật khẩu');

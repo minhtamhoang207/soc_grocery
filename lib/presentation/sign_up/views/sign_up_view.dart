@@ -23,7 +23,7 @@ class SignUpView extends GetView<SignUpController> {
         BotToast.showLoading();
       } else if (callback.isSuccess) {
         BotToast.closeAllLoading();
-        Get.toNamed(Routes.LOGIN);
+        Get.offAllNamed(Routes.DASHBOARD);
       } else if (callback.isError) {
         BotToast.showText(text: controller.signUpStatus.value.errorMessage ?? '');
         BotToast.closeAllLoading();

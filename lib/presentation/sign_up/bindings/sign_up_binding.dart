@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:soc_grocery/data/repositories/cart_repository_impl.dart';
+import 'package:soc_grocery/domain/usecases/auth/login_use_case.dart';
 import 'package:soc_grocery/domain/usecases/auth/register_use_case.dart';
 import 'package:soc_grocery/domain/usecases/cart/create_cart_usecase.dart';
 
@@ -16,7 +17,8 @@ class SignUpBinding extends Bindings {
     Get.lazyPut<SignUpController>(
       () => SignUpController(
           Get.find<RegisterUseCase>(),
-          Get.find<CreateCartUseCase>()
+          Get.find<CreateCartUseCase>(),
+          Get.find<LoginUseCase>(),
       ),
     );
   }

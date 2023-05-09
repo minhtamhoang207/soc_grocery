@@ -9,7 +9,7 @@ mixin AppTextStyles {
     FontWeight? fonWeight,
     Color? color
   }){
-    return GoogleFonts.montserrat(
+    return GoogleFonts.beVietnamPro(
       textStyle: TextStyle(
         fontSize: fontSize ?? 13,
         fontWeight: fonWeight ?? FontWeight.w600,

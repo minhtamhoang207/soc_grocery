@@ -28,7 +28,7 @@ mixin _$ProductResponse {
   int? get quantity => throw _privateConstructorUsedError;
   List<String>? get categories => throw _privateConstructorUsedError;
   List<String>? get imageUrls => throw _privateConstructorUsedError;
-  int? get rating => throw _privateConstructorUsedError;
+  double? get rating => throw _privateConstructorUsedError;
   DateTime? get createdAt => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
 
@@ -52,7 +52,7 @@ abstract class $ProductResponseCopyWith<$Res> {
       int? quantity,
       List<String>? categories,
       List<String>? imageUrls,
-      int? rating,
+      double? rating,
       DateTime? createdAt,
       DateTime? updatedAt});
 }
@@ -113,7 +113,7 @@ class _$ProductResponseCopyWithImpl<$Res, $Val extends ProductResponse>
       rating: freezed == rating
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -142,7 +142,7 @@ abstract class _$$_ProductResponseCopyWith<$Res>
       int? quantity,
       List<String>? categories,
       List<String>? imageUrls,
-      int? rating,
+      double? rating,
       DateTime? createdAt,
       DateTime? updatedAt});
 }
@@ -201,7 +201,7 @@ class __$$_ProductResponseCopyWithImpl<$Res>
       rating: freezed == rating
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -266,7 +266,7 @@ class _$_ProductResponse implements _ProductResponse {
   }
 
   @override
-  final int? rating;
+  final double? rating;
   @override
   final DateTime? createdAt;
   @override
@@ -338,7 +338,7 @@ abstract class _ProductResponse implements ProductResponse {
       final int? quantity,
       final List<String>? categories,
       final List<String>? imageUrls,
-      final int? rating,
+      final double? rating,
       final DateTime? createdAt,
       final DateTime? updatedAt}) = _$_ProductResponse;
 
@@ -361,7 +361,7 @@ abstract class _ProductResponse implements ProductResponse {
   @override
   List<String>? get imageUrls;
   @override
-  int? get rating;
+  double? get rating;
   @override
   DateTime? get createdAt;
   @override

@@ -33,107 +33,117 @@ class ShopView extends GetView<ShopController> {
     });
 
     return Scaffold(
-        body: ListView(
+        body: RefreshIndicator(
+          onRefresh: () async {
+            controller.onInit();
+          },
+          child: ListView(
       children: [
-        const Gap(20),
-        SvgPicture.asset(Assets.icons.icCarrot),
-        const Gap(15),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset(Assets.icons.icLocation),
-              const Gap(10),
-              Obx(() => Expanded(child: Text(controller.currentPosition.value)))
-            ],
+          const Gap(20),
+          SvgPicture.asset(Assets.icons.icCarrot),
+          const Gap(15),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(Assets.icons.icLocation),
+                const Gap(10),
+                Obx(() => Expanded(child: Text(controller.currentPosition.value)))
+              ],
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
-          child: TextField(
-            decoration: InputDecoration(
-                filled: true,
-                contentPadding: const EdgeInsets.only(top: 15),
-                suffixIcon: IconButton(
-                  onPressed: () {
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+            child: TextField(
+              decoration: InputDecoration(
+                  filled: true,
+                  contentPadding: const EdgeInsets.only(top: 15),
+                  suffixIcon: IconButton(
+                    onPressed: () {
 
-                  },
-                  icon: const Icon(CupertinoIcons.mic),
-                ),
-                fillColor: AppColors.lightGray.withOpacity(0.5),
-                border: InputBorder.none,
-                hintText: 'Tìm kiếm sản phẩm',
-                prefixIcon:
-                    const Icon(CupertinoIcons.search, color: Colors.black)),
-          ),
-        ),
-        ShopBanner(imgList: controller.imgList),
-        Padding(
-            padding: const EdgeInsets.only(left: 25, bottom: 10, right: 25, top: 25),
-            child: Row(
-              children: [
-                Text(
-                  'Excluisve offer',
-                  style: AppTextStyles.montserrat(fontSize: 18),
-                ),
-                const Spacer(),
-                InkWell(
-                  onTap: () {
-                    Get.toNamed(Routes.LIST_PRODUCT);
-                  },
-                  child: Text(
-                    'See all',
-                    style: AppTextStyles.montserrat(
-                        fontSize: 15, color: AppColors.primary),
+                    },
+                    icon: const Icon(CupertinoIcons.mic),
                   ),
+                  fillColor: AppColors.lightGray.withOpacity(0.5),
+                  border: InputBorder.none,
+                  hintText: 'Tìm kiếm sản phẩm',
+                  prefixIcon:
+                      const Icon(CupertinoIcons.search, color: Colors.black)),
+            ),
+          ),
+          ShopBanner(imgList: controller.imgList),
+          Padding(
+              padding: const EdgeInsets.only(left: 25, bottom: 10, right: 25, top: 25),
+              child: Row(
+                children: [
+                  Text(
+                    'Excluisve offer',
+                    style: AppTextStyles.montserrat(fontSize: 18),
+                  ),
+                  const Spacer(),
+                  InkWell(
+                    onTap: () {
+                      Get.toNamed(Routes.LIST_PRODUCT);
+                    },
+                    child: Text(
+                      'See all',
+                      style: AppTextStyles.montserrat(
+                          fontSize: 15, color: AppColors.primary),
+                    ),
+                  ),
+                ],
+              )),
+          Obx(() =>
+              SizedBox(
+                height: 280,
+                child: ListView.builder(
+                  itemCount: controller.listProduct.value.length,
+                  padding: const EdgeInsets.only(left: 25),
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    ProductResponse product = controller.listProduct.value[index];
+                    return ProductItem(product: product, shopController: controller);
+                  },
                 ),
-              ],
-            )),
-        Obx(() =>
-            SizedBox(
-              height: 280,
-              child: ListView.builder(
-                itemCount: controller.listProduct.value.length,
-                padding: const EdgeInsets.only(left: 25),
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  ProductResponse product = controller.listProduct.value[index];
-                  return ProductItem(product: product, shopController: controller);
-                },
-              ),
-            )),
-        Padding(
-            padding:
-                const EdgeInsets.only(left: 25, bottom: 10, right: 25, top: 30),
-            child: Row(
-              children: [
-                Text(
-                  'Best selling',
-                  style: AppTextStyles.montserrat(fontSize: 18),
+              )),
+          Padding(
+              padding:
+                  const EdgeInsets.only(left: 25, bottom: 10, right: 25, top: 30),
+              child: Row(
+                children: [
+                  Text(
+                    'Best selling',
+                    style: AppTextStyles.montserrat(fontSize: 18),
+                  ),
+                  const Spacer(),
+                  InkWell(
+                    onTap: () {
+                      Get.toNamed(Routes.LIST_PRODUCT);
+                    },
+                    child: Text(
+                      'See all',
+                      style: AppTextStyles.montserrat(
+                          fontSize: 15, color: AppColors.primary),
+                    ),
+                  ),
+                ],
+              )),
+          Obx(() =>
+              SizedBox(
+                height: 280,
+                child: ListView.builder(
+                  itemCount: controller.listProduct.value.length,
+                  padding: const EdgeInsets.only(left: 25),
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    ProductResponse product = controller.listProduct.value[index];
+                    return ProductItem(product: product, shopController: controller);
+                  },
                 ),
-                const Spacer(),
-                Text(
-                  'See all',
-                  style: AppTextStyles.montserrat(
-                      fontSize: 15, color: AppColors.primary),
-                ),
-              ],
-            )),
-        Obx(() =>
-            SizedBox(
-              height: 280,
-              child: ListView.builder(
-                itemCount: controller.listProduct.value.length,
-                padding: const EdgeInsets.only(left: 25),
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  ProductResponse product = controller.listProduct.value[index];
-                  return ProductItem(product: product, shopController: controller);
-                },
-              ),
-            )),
+              )),
       ],
-    ));
+    ),
+        ));
   }
 }

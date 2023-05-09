@@ -1,9 +1,11 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:soc_grocery/app/config/app_colors.dart';
 import 'package:soc_grocery/app/config/app_text_styles.dart';
+import 'package:soc_grocery/app/routes/app_pages.dart';
 import 'package:soc_grocery/app/util/util.dart';
 import 'package:soc_grocery/data/models/response/product_response.dart';
 import 'package:soc_grocery/presentation/common_widgets/cache_network_image.dart';
@@ -24,6 +26,9 @@ class CartView extends GetView<CartController> {
             style: TextStyle(
               color: Colors.black
             ),
+        ),
+        iconTheme: const IconThemeData(
+          color: Colors.black,
         ),
         centerTitle: true,
       ),
@@ -47,14 +52,28 @@ class _CartState extends State<Cart> {
   @override
   void initState() {
     controller = widget.controller;
-    controller.getCart();
+    controller.getCart(true);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+
+    ever(controller.toastStatus, (callback) {
+      if (callback.isLoading) {
+        BotToast.showLoading();
+      } else if (callback.isSuccess) {
+        BotToast.closeAllLoading();
+        BotToast.showText(text: 'Cập nhật giỏ hàng thành công');
+      } else if (callback.isError) {
+        BotToast.showText(text: controller.toastStatus.value.errorMessage ?? '');
+        BotToast.closeAllLoading();
+      }
+    });
+
     return Obx(() {
-      if (controller.status.value.isLoading) {
+      if (controller.status.value.isLoading
+          && !controller.toastStatus.value.isSuccess) {
         return const Center(
           child: CircularProgressIndicator(),
         );
@@ -72,139 +91,124 @@ class _CartState extends State<Cart> {
 
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
-                          child: Row(
+                          child: Column(
                             children: [
-                              AppImage(
-                                url: (product?.imageUrls?.isNotEmpty ?? false)
-                                      ? product?.imageUrls?.first ?? ''
-                                      : ''  ,
-                                height: 60,
-                                width: 60,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              const Gap(25),
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      product?.name ?? '',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: AppTextStyles.montserrat(
-                                        fontSize: 18,
-                                        fonWeight: FontWeight.w700
-                                      ),
-                                    ),
-                                    const Gap(20),
-                                    Row(
+                              Row(
+                                children: [
+                                  AppImage(
+                                    url: (product?.imageUrls?.isNotEmpty ?? false)
+                                          ? product?.imageUrls?.first ?? ''
+                                          : ''  ,
+                                    height: 60,
+                                    width: 60,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  const Gap(25),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        const Gap(5),
-                                        IconButton(
-                                            onPressed: () {
-                                              if((controller.cart
-                                                  .value.first
-                                                  .items?[index].quantity ??
-                                                  0) > 1) {
-                                                controller.updateItem(
-                                                    productID: product?.id ??
-                                                        '',
-                                                    quantity: (controller.cart
-                                                        .value.first
-                                                        .items?[index]
-                                                        .quantity ??
-                                                        0) - 1
-                                                );
-                                              } else {
-                                                controller.deleteItem(productID: product?.id ?? '');
-                                              }
-                                            },
-                                            icon: const Icon(
-                                                CupertinoIcons.minus)),
-                                        Container(
-                                            padding:
-                                            const EdgeInsets.symmetric(
-                                                horizontal: 12, vertical: 6),
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius
-                                                    .circular(8),
-                                                border:
-                                                Border.all(
-                                                    color: AppColors.textGray
-                                                        .withOpacity(0.8))),
-                                            child: Text(
-                                              '${controller.cart.value.first
-                                                  .items?[index].quantity ?? 0}',
-                                              style: AppTextStyles.montserrat(
-                                                  fonWeight: FontWeight.bold,
-                                                  fontSize: 16),
-                                            )),
-                                        IconButton(
-                                            onPressed: () {
-                                              controller.updateItem(
-                                                  productID: product?.id ??
-                                                      '',
-                                                  quantity: (controller.cart
-                                                      .value.first
-                                                      .items?[index]
-                                                      .quantity ??
-                                                      0) + 1
-                                              );
-                                            },
-                                            icon: Icon(CupertinoIcons.add,
-                                                color: AppColors.primary)),
-                                        const Gap(20)
+                                        Text(
+                                          product?.name ?? '',
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: AppTextStyles.montserrat(
+                                            fontSize: 18,
+                                            fonWeight: FontWeight.w700
+                                          ),
+                                        ),
+                                        const Gap(20),
+                                        Text(
+                                          Utils.formatCurrency(
+                                              (controller.cart.value.first.items?[index].quantity ?? 0)
+                                                  * (product?.price ?? 0)
+                                          ),
+                                          style: AppTextStyles.montserrat(
+                                              fonWeight: FontWeight.bold,
+                                              fontSize: 15
+                                          ),
+                                        ),
                                       ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                              const Gap(20),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  IconButton(
-                                      onPressed: () {
-                                        controller.deleteItem(
-                                            productID: product?.id ?? '');
-                                      },
-                                      icon: const Icon(CupertinoIcons.delete_solid, color: Colors.redAccent,)
                                   ),
                                   const Gap(20),
-                                  Text(
-                                    Utils.formatCurrency(
-                                        (controller.cart.value.first.items?[index].quantity ?? 0)
-                                            * (product?.price ?? 0)
-                                    ),
-                                    style: AppTextStyles.montserrat(
-                                      fonWeight: FontWeight.bold,
-                                      fontSize: 15
-                                    ),
-                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {
+                                            controller.deleteItem(
+                                                productID: product?.id ?? '');
+                                          },
+                                          icon: const Icon(CupertinoIcons.delete_solid, color: Colors.redAccent,)
+                                      ),
+                                    ],
+                                  )
                                 ],
-                              )
+                              ),
+                              const Gap(20),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  const Gap(5),
+                                  IconButton(
+                                      onPressed: () {
+                                        if((controller.cart
+                                            .value.first
+                                            .items?[index].quantity ??
+                                            0) > 1) {
+                                          controller.updateItem(
+                                              productID: product?.id ??
+                                                  '',
+                                              quantity: (controller.cart
+                                                  .value.first
+                                                  .items?[index]
+                                                  .quantity ??
+                                                  0) - 1
+                                          );
+                                        } else {
+                                          controller.deleteItem(productID: product?.id ?? '');
+                                        }
+                                      },
+                                      icon: const Icon(
+                                          CupertinoIcons.minus)),
+                                  Container(
+                                      padding:
+                                      const EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 6),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius
+                                              .circular(8),
+                                          border:
+                                          Border.all(
+                                              color: AppColors.textGray
+                                                  .withOpacity(0.8))),
+                                      child: Text(
+                                        '${controller.cart.value.first
+                                            .items?[index].quantity ?? 0}',
+                                        style: AppTextStyles.montserrat(
+                                            fonWeight: FontWeight.bold,
+                                            fontSize: 13),
+                                      )),
+                                  IconButton(
+                                      onPressed: () {
+                                        controller.updateItem(
+                                            productID: product?.id ??
+                                                '',
+                                            quantity: (controller.cart
+                                                .value.first
+                                                .items?[index]
+                                                .quantity ??
+                                                0) + 1
+                                        );
+                                      },
+                                      icon: Icon(CupertinoIcons.add,
+                                          color: AppColors.primary)),
+                                ],
+                              ),
                             ],
                           ),
                         );
-
-                        // return ListTile(
-                        //   title: Text(product?.name ?? ''),
-                        //   trailing: Row(
-                        //     mainAxisSize: MainAxisSize.min,
-                        //     children: [
-                        //       Text(
-                        //           'Số lượng: ${controller.cart.value.first
-                        //               .items?[index].quantity ?? 0}'
-                        //       ),
-                        //       IconButton(
-                        //           onPressed: () {
-                        //             controller.deleteItem(productID: product?.id ?? '');
-                        //           },
-                        //           icon: const Icon(CupertinoIcons.delete)
-                        //       )
-                        //     ],
-                        //   ),
-                        //   subtitle: Text((product?.quantity ?? 0).toString()),
-                        // );
                       },
                       separatorBuilder: (_, __) =>
                           Divider(thickness: 1, color: AppColors.primary),
@@ -240,6 +244,31 @@ class _CartState extends State<Cart> {
                     ),
                   )
                 ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Get.toNamed(Routes.PAYMENT, arguments: controller.cart.value.isEmpty
+                    ? 0
+                    : controller.cart.value.first.total ?? 0);
+              },
+              child: Container(
+                margin: const EdgeInsets.only(left: 5, right: 5, bottom: 30),
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: AppColors.primary
+                ),
+                child: Center(
+                  child: Text(
+                    'Thanh toán ngay',
+                    style: AppTextStyles.montserrat(
+                        fontSize: 18,
+                        fonWeight: FontWeight.bold,
+                        color: Colors.white
+                    ),
+                  ),
+                ),
               ),
             )
           ],

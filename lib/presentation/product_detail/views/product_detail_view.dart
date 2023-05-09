@@ -37,9 +37,10 @@ class ProductDetailView extends GetView<ProductDetailController> {
       children: [
         Stack(
           children: [
-
             AppImage(
-              url: 'https://live-production.wcms.abc-cdn.net.au/b983edcea41673904b177071b138dadb?impolicy=wcms_crop_resize&cropH=861&cropW=1529&xPos=0&yPos=345&width=862&height=485',
+              url: (controller.product.imageUrls?.isNotEmpty ?? false)
+                  ? controller.product.imageUrls!.first
+                  : '',
               height: Get.height * 0.4,
               borderRadius: const BorderRadius.only(
                   bottomRight: Radius.circular(20),
@@ -70,6 +71,29 @@ class ProductDetailView extends GetView<ProductDetailController> {
                           color: Colors.black.withOpacity(0.5),
                           shape: BoxShape.circle),
                       child: const Icon(Icons.arrow_back_ios_new_outlined,
+                          color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+              top: 50,
+              right: 10,
+              child: Row(
+                children: [
+                  const Gap(10),
+                  InkWell(
+                    onTap: () {
+                      Get.toNamed(Routes.CART);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.only(
+                          top: 8, bottom: 8, right: 10, left: 8),
+                      decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.5),
+                          shape: BoxShape.circle),
+                      child: const Icon(CupertinoIcons.cart,
                           color: Colors.white),
                     ),
                   ),

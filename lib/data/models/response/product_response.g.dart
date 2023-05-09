@@ -19,7 +19,7 @@ _$_ProductResponse _$$_ProductResponseFromJson(Map<String, dynamic> json) =>
       imageUrls: (json['imageUrls'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
-      rating: json['rating'] as int?,
+      rating: (json['rating'] as num?)?.toDouble(),
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),

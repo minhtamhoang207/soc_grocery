@@ -13,13 +13,20 @@ import 'package:soc_grocery/domain/usecases/auth/login_use_case.dart';
 
 import '../../../app/services/local_storage.dart';
 import '../../../domain/usecases/auth/login_google_usecase.dart';
+import '../../../domain/usecases/cart/get_cart_usecase.dart';
 
 class LoginController extends GetxController
     with GetSingleTickerProviderStateMixin {
+
+  LoginController(
+      this._loginUseCase, 
+      this._loginGoogleUseCase,
+      this._getCartUseCase);
+
   final LoginUseCase _loginUseCase;
   final LoginGoogleUseCase _loginGoogleUseCase;
+  final GetCartUseCase _getCartUseCase;
 
-  LoginController(this._loginUseCase, this._loginGoogleUseCase);
 
   final Rx<RxStatus> status = RxStatus.empty().obs;
   final showPassword = false.obs;
@@ -38,6 +45,10 @@ class LoginController extends GetxController
       final UserResponse response = await _loginUseCase.execute(
           LoginRequest(username: username.text, password: password.text));
       await localStorageService.saveUser(userResponse: response);
+      final cart = await _getCartUseCase.execute();
+      if(cart.isNotEmpty) {
+        await localStorageService.saveCartID(cartID: cart.first.id ?? '');
+      }
       status.value = RxStatus.success();
     } on ErrorEntity catch (e) {
       log(e.message);

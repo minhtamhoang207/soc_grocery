@@ -6,6 +6,7 @@ class ListProductBinding extends Bindings {
   @override
   void dependencies() {
     Get.put<ListProductController>(ListProductController(
+      Get.find(),
       Get.find()
     ));
   }

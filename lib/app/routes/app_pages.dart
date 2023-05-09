@@ -16,6 +16,8 @@ import '../../presentation/login/bindings/login_binding.dart';
 import '../../presentation/login/views/login_view.dart';
 import '../../presentation/onboarding/bindings/onboarding_binding.dart';
 import '../../presentation/onboarding/views/onboarding_view.dart';
+import '../../presentation/payment/bindings/payment_binding.dart';
+import '../../presentation/payment/views/payment_view.dart';
 import '../../presentation/product_detail/bindings/product_detail_binding.dart';
 import '../../presentation/product_detail/views/product_detail_view.dart';
 import '../../presentation/shop/bindings/shop_binding.dart';
@@ -92,6 +94,11 @@ class AppPages {
       name: _Paths.LIST_PRODUCT,
       page: () => const ListProductView(),
       binding: ListProductBinding(),
+    ),
+    GetPage(
+      name: _Paths.PAYMENT,
+      page: () => const PaymentView(),
+      binding: PaymentBinding(),
     ),
   ];
 }

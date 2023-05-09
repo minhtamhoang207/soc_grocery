@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:soc_grocery/app/config/app_colors.dart';
 import 'package:soc_grocery/app/config/app_text_styles.dart';
 import 'package:soc_grocery/app/routes/app_pages.dart';
+import 'package:soc_grocery/presentation/common_widgets/cache_network_image.dart';
 import 'package:soc_grocery/presentation/shop/views/widgets/product_item.dart';
 
 import '../controllers/account_controller.dart';
@@ -35,17 +37,11 @@ class AccountView extends GetView<AccountController> {
               ),
               child: Row(
                 children: [
-                  Container(
+                  const AppImage(
+                    url: 'https://haycafe.vn/wp-content/uploads/2021/11/Anh-avatar-dep-chat-lam-hinh-dai-dien.jpg',
                     height: 64,
                     width: 64,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: AppColors.primary, width: 2),
-                        shape: BoxShape.circle,
-                        image: const DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(
-                                'https://scontent.fhan14-1.fna.fbcdn.net/v/t39.30808-6/306505141_2117342388445203_2786382950253799721_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=Gd4b9wDRdGMAX8nqivF&_nc_ht=scontent.fhan14-1.fna&oh=00_AfCBshzBQfOOHHTKuvcYxhCdE7gINHsPI4eSnsdrDtKVCw&oe=64571F6B'))),
+                    boxShape: BoxShape.circle,
                   ),
                   const Gap(10),
                   Expanded(
@@ -113,6 +109,7 @@ class AccountView extends GetView<AccountController> {
         GestureDetector(
           onTap: () async {
             await controller.localStorageService.clearAll();
+            GoogleSignIn().signOut();
             Get.offAllNamed(Routes.LOGIN);
           },
           child: Container(

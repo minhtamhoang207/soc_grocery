@@ -7,6 +7,7 @@ import 'package:soc_grocery/data/models/response/user_response.dart';
 enum _Key {
   user,
   bearToken,
+  cartID
 }
 
 class LocalStorageService extends GetxService {
@@ -28,6 +29,15 @@ class LocalStorageService extends GetxService {
     } else {
       return null;
     }
+  }
+
+  Future<void> saveCartID({required String cartID}) async {
+    await _sharedPreferences?.setString(_Key.cartID.name, cartID);
+  }
+
+  Future<String?> getCartID() async {
+    String? jsonString = _sharedPreferences?.getString(_Key.cartID.name);
+    return jsonString;
   }
 
   Future<void> saveUser({required UserResponse userResponse}) async {

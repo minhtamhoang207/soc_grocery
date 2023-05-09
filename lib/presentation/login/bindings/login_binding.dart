@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:soc_grocery/data/repositories/auth_repository_impl.dart';
+import 'package:soc_grocery/data/repositories/cart_repository_impl.dart';
 import 'package:soc_grocery/domain/usecases/auth/login_use_case.dart';
+import 'package:soc_grocery/domain/usecases/cart/get_cart_usecase.dart';
 
 import '../../../data/datasources/remote/auth/auth_service.dart';
 import '../../../domain/usecases/auth/login_google_usecase.dart';
@@ -18,9 +20,12 @@ class LoginBinding extends Bindings {
 
     Get.put(LoginUseCase(Get.find<AuthRepoImpl>()));
     Get.put(LoginGoogleUseCase(Get.find<AuthRepoImpl>()));
+    Get.put(GetCartUseCase(Get.find<CartRepositoryImpl>()));
+
     Get.put<LoginController>(LoginController(
         Get.find<LoginUseCase>(),
-        Get.find<LoginGoogleUseCase>()
+        Get.find<LoginGoogleUseCase>(),
+        Get.find<GetCartUseCase>()
     ));
   }
 }

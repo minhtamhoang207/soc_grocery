@@ -41,6 +41,18 @@ class ExploreView extends GetView<ExploreController> {
         body: Column(
           children: [
             Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Obx(() => controller.recognizing.value
+                  ? const Text('Listening')
+                  : const Text('Say or type something...')),
+            ),
+            IconButton(
+                onPressed: (){
+                  controller.stop();
+                },
+                icon: const Icon(Icons.stop_circle_outlined)
+            ),
+            Padding(
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
               child: TextField(
                 onChanged: (value) {
@@ -53,6 +65,12 @@ class ExploreView extends GetView<ExploreController> {
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.only(top: 15),
                     hintText: 'Tìm kiếm...',
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        controller.start();
+                      },
+                      icon: const Icon(CupertinoIcons.mic),
+                    ),
                     prefixIcon:
                         const Icon(CupertinoIcons.search, color: Colors.black)),
               ),

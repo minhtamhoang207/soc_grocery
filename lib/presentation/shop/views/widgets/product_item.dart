@@ -59,7 +59,7 @@ class ProductItem extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               child: Text(
                 product.name ?? '',
-                maxLines: 2,
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: AppTextStyles.montserrat(
                     fontSize: 16, fonWeight: FontWeight.bold),

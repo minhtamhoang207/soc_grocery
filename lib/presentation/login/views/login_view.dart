@@ -22,7 +22,7 @@ class LoginView extends GetView<LoginController>{
         BotToast.showLoading();
       } else if (callback.isSuccess) {
         BotToast.closeAllLoading();
-        Get.toNamed(Routes.DASHBOARD);
+        Get.offAllNamed(Routes.DASHBOARD);
       } else if (callback.isError) {
         BotToast.showText(text: controller.status.value.errorMessage ?? '');
         BotToast.closeAllLoading();

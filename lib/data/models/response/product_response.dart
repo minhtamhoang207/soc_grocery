@@ -15,7 +15,7 @@ class ProductResponse with _$ProductResponse {
     int? quantity,
     List<String>? categories,
     List<String>? imageUrls,
-    int? rating,
+    double? rating,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) = _ProductResponse;

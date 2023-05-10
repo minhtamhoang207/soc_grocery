@@ -8,6 +8,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:soc_grocery/app/config/app_colors.dart';
 import 'package:soc_grocery/app/config/assets.gen.dart';
+import 'package:soc_grocery/data/datasources/remote/cart/cart_service.dart';
+import 'package:soc_grocery/data/repositories/cart_repository_impl.dart';
+import 'package:soc_grocery/domain/usecases/cart/cart_usecase.dart';
 import 'package:soc_grocery/presentation/account/controllers/account_controller.dart';
 import 'package:soc_grocery/presentation/cart/bindings/cart_binding.dart';
 import 'package:soc_grocery/presentation/cart/controllers/cart_controller.dart';
@@ -48,7 +51,10 @@ class DashboardView extends GetView<DashboardController> {
                 Get.put(FavouriteController());
                 break;
               case 4:
-                Get.put(AccountController());
+                Get.put(AccountController(
+                    Get.put(CartUseCases(
+                        Get.put(CartRepositoryImpl(
+                            cartService: Get.put(CartService(Get.find()))))))));
                 break;
               default:
                 log('index not found');

@@ -1,6 +1,7 @@
 import 'package:soc_grocery/data/datasources/remote/cart/cart_service.dart';
 import 'package:soc_grocery/data/models/request/add_item_request.dart';
 import 'package:soc_grocery/data/models/request/create_cart_request.dart';
+import 'package:soc_grocery/data/models/request/order_request.dart';
 import 'package:soc_grocery/data/models/request/quantity_request.dart';
 import 'package:soc_grocery/data/models/response/base_response.dart';
 
@@ -79,6 +80,28 @@ class CartRepositoryImpl implements CartRepository {
           productID: productID,
           quantityRequest: quantityRequest
       );
+      return response;
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  @override
+  Future<BaseResponse> createOrder({required OrderRequest orderRequest}) async {
+    try {
+      final response = await cartService.createOrder(
+          orderRequest: orderRequest
+      );
+      return response;
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  @override
+  Future<BaseResponse> getOrder() async {
+    try {
+      final response = await cartService.getOrder();
       return response;
     } catch (e) {
       throw Exception();

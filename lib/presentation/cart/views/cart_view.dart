@@ -248,9 +248,15 @@ class _CartState extends State<Cart> {
             ),
             GestureDetector(
               onTap: () {
-                Get.toNamed(Routes.PAYMENT, arguments: controller.cart.value.isEmpty
-                    ? 0
-                    : controller.cart.value.first.total ?? 0);
+                Get.toNamed(
+                    Routes.PAYMENT,
+                    arguments: controller.cart.value.isEmpty
+                      ? 0
+                      : {
+                      'total': controller.cart.value.first.total ?? 0,
+                      'items': controller.cart.value.first.items
+                    }
+                );
               },
               child: Container(
                 margin: const EdgeInsets.only(left: 5, right: 5, bottom: 30),

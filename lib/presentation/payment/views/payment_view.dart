@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:momo_vn/momo_vn.dart';
 import 'package:soc_grocery/app/config/assets.gen.dart';
 import 'package:soc_grocery/app/util/util.dart';
+import 'package:soc_grocery/data/models/request/order_request.dart';
 
 import '../../../app/config/app_colors.dart';
 import '../../../app/config/app_text_styles.dart';
@@ -18,6 +19,17 @@ class PaymentView extends GetView<PaymentController> {
   const PaymentView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    ever(controller.status, (callback) {
+      if (callback.isLoading) {
+        BotToast.showLoading();
+      } else if (callback.isSuccess) {
+        BotToast.closeAllLoading();
+      } else if (callback.isError) {
+        BotToast.showText(text: controller.status.value.errorMessage ?? '');
+        BotToast.closeAllLoading();
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -254,6 +266,15 @@ class _MyAppState extends State<MyApp> {
       content: 'Thanh toán thành công ${Utils.formatCurrency(
           controller.total ?? 0)} cho Shopeyyy'
     );
+    controller.createOrder(orderRequest: OrderRequest(
+        token: response.token ?? '',
+        orderId: controller.transactionID,
+        customerNumber: response.phoneNumber.toString(),
+        amount: controller.total ?? 0,
+        items: controller.listOrder.value,
+        tax: 0,
+        discount: 0
+    ));
     // BotToast.showText(text: "THÀNH CÔNG: " + response.phoneNumber.toString());
   }
 

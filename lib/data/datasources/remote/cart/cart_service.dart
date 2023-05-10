@@ -3,6 +3,7 @@ import 'package:retrofit/http.dart';
 import 'package:soc_grocery/app/config/app_constants.dart';
 import 'package:soc_grocery/data/models/request/add_item_request.dart';
 import 'package:soc_grocery/data/models/request/create_cart_request.dart';
+import 'package:soc_grocery/data/models/request/order_request.dart';
 import 'package:soc_grocery/data/models/request/quantity_request.dart';
 import 'package:soc_grocery/data/models/response/base_response.dart';
 
@@ -38,4 +39,12 @@ abstract class CartService {
     @Path("id") required String cartID,
     @Path("productId") required String productID,
   });
+
+  @POST('/order')
+  Future<BaseResponse> createOrder({
+    @Body() required OrderRequest orderRequest
+  });
+
+  @GET('/order')
+  Future<BaseResponse> getOrder();
 }

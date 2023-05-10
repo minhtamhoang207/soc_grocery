@@ -14,7 +14,7 @@ class _CartService implements CartService {
     this.baseUrl,
   }) {
     baseUrl ??=
-        'https://c863-2405-4802-1cb3-ada0-e093-d21a-b0fd-f051.ngrok-free.app/api/v1';
+        'https://5bc7-2401-d800-9194-e1fb-859c-b2a1-c4ad-8a21.ngrok-free.app/api/v1';
   }
 
   final Dio _dio;
@@ -141,6 +141,53 @@ class _CartService implements CartService {
             .compose(
               _dio.options,
               '/cart/${cartID}/items/${productID}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseResponse> createOrder({required orderRequest}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(orderRequest.toJson());
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/order',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseResponse> getOrder() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/order',
               queryParameters: queryParameters,
               data: _data,
             )

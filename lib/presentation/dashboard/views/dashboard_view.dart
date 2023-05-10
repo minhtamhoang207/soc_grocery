@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:bot_toast/bot_toast.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -52,7 +54,12 @@ class DashboardView extends GetView<DashboardController> {
                 log('index not found');
                 break;
             }
-            controller.changeTab(index: index);
+            if (index != 3) {
+              controller.changeTab(index: index);
+            } else {
+              BotToast.showText(text: 'Coming real soon ^^');
+              // FirebaseCrashlytics.instance.crash();
+            }
           },
           currentIndex: controller.currentTab.value,
           items: <BottomNavigationBarItem>[

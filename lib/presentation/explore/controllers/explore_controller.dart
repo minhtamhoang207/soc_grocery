@@ -111,9 +111,10 @@ class ExploreController extends GetxController {
     responseStream.listen((data) {
       text.value =
           data.results.map((e) => e.alternatives.first.transcript).join('\n');
-      searchController.value = TextEditingController(text: text.value);
-      log(text.value + '------>');
-    }, onDone: () {});
+      searchController.value.text = text.value.replaceAll('.', '').toLowerCase();
+    }, onDone: () {
+      searchCategory(keyword: text.value.replaceAll('.', '').toLowerCase());
+    });
   }
 
   Future<List<int>> _getAudioContent(String path) async {
@@ -129,6 +130,6 @@ class ExploreController extends GetxController {
       model: RecognitionModel.basic,
       enableAutomaticPunctuation: true,
       sampleRateHertz: 16000,
-      languageCode: 'en-US');
+      languageCode: 'vi-VN');
 
 }

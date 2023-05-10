@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -40,7 +41,12 @@ class ShopView extends GetView<ShopController> {
           child: ListView(
       children: [
           const Gap(20),
-          SvgPicture.asset(Assets.icons.icCarrot),
+          InkWell(
+            onTap: () {
+              FirebaseCrashlytics.instance.crash();
+            },
+              child: SvgPicture.asset(Assets.icons.icCarrot)
+          ),
           const Gap(15),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),

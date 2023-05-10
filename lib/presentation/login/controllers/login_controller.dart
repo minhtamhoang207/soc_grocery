@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:math' as math;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -49,6 +50,8 @@ class LoginController extends GetxController
       if(cart.isNotEmpty) {
         await localStorageService.saveCartID(cartID: cart.first.id ?? '');
       }
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+      log('FCM token is: $fcmToken');
       status.value = RxStatus.success();
     } on ErrorEntity catch (e) {
       log(e.message);
@@ -81,7 +84,7 @@ class LoginController extends GetxController
         String? idToken = await userCredential.user?.getIdToken();
         log(idToken!);
         await _loginGoogleUseCase.execute(LoginGoogleRequest(
-          idToken: idToken
+          idToken: googleSignInAccount.serverAuthCode
         ));
         status.value = RxStatus.success();
       } catch (e) {

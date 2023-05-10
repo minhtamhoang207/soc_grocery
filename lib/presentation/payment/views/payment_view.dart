@@ -11,6 +11,7 @@ import 'package:soc_grocery/app/util/util.dart';
 
 import '../../../app/config/app_colors.dart';
 import '../../../app/config/app_text_styles.dart';
+import '../../dashboard/controllers/dashboard_controller.dart';
 import '../controllers/payment_controller.dart';
 
 class PaymentView extends GetView<PaymentController> {
@@ -242,13 +243,18 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  void _handlePaymentSuccess(PaymentResponse response) {
+  void _handlePaymentSuccess(PaymentResponse response) async {
     log(response.token ?? 'token null');
     setState(() {
       _momoPaymentResult = response;
       _setState();
     });
-    BotToast.showText(text: "THÀNH CÔNG: " + response.phoneNumber.toString());
+    await FirebaseMessagingHandler.show(
+      title: 'Thanh toán thành công',
+      content: 'Thanh toán thành công ${Utils.formatCurrency(
+          controller.total ?? 0)} cho Shopeyyy'
+    );
+    // BotToast.showText(text: "THÀNH CÔNG: " + response.phoneNumber.toString());
   }
 
   void _handlePaymentError(PaymentResponse response) {

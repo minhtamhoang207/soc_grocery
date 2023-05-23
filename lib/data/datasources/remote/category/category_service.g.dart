@@ -13,8 +13,7 @@ class _CategoryService implements CategoryService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??=
-        'https://5bc7-2401-d800-9194-e1fb-859c-b2a1-c4ad-8a21.ngrok-free.app/api/v1';
+    baseUrl ??= 'https://1210-113-160-14-39.ngrok-free.app/api/v1';
   }
 
   final Dio _dio;

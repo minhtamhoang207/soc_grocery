@@ -14,7 +14,7 @@ class FavouriteView extends GetView<FavouriteController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('FavouriteView'),
+        title: const Text('Tab Yeu thich'),
         centerTitle: true,
       ),
       body: const Placeholder()
